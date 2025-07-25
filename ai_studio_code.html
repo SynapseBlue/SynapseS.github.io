@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SirHurt V4 Documentation</title>
+  <style>
+      :root {
+          --bg-color: #1a1a2e;
+          --card-bg-color: #16213e;
+          --text-color: #e0e0e0;
+          --heading-color: #e94560;
+          --code-bg-color: #0f3460;
+          --return-type-color: #00b894; /* Greenish */
+          --function-name-color: #8e44ad; /* Purple */
+          --param-type-color: #0984e3; /* Blue */
+          --param-name-color: #fdcb6e; /* Yellowish */
+          --keyword-color: #e17055; /* Orange */
+          --link-color: #74b9ff;
+          --border-color: #0f3460;
+          --sidebar-width: 220px;
+      }
+
+      body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+          margin: 0;
+          padding: 0;
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          line-height: 1.6;
+          display: flex;
+          justify-content: center;
+          min-height: 100vh;
+          background-image: url('https://media.discordapp.net/attachments/816788410516766741/1398117823922045039/GmzdzSBWqJYhLv6KMYYquGvOt9g.avif?ex=68843230&is=6882e0b0&hm=83ed170b7844586aa4a4516e2d5ab58230dc747ba470d2291558b03d0211afac&=&format=webp&quality=lossless&width=1101&height=619'); /* Updated background image */
+          background-size: cover;
+          background-position: center;
+          background-attachment: fixed;
+      }
+
+      .sidebar {
+          position: fixed;
+          left: 0;
+          top: 0;
+          width: var(--sidebar-width);
+          height: 100%;
+          background-color: rgba(10, 20, 40, 0.7); /* Semi-transparent */
+          backdrop-filter: blur(8px); /* Blur effect */
+          -webkit-backdrop-filter: blur(8px); /* For Safari */
+          padding: 20px;
+          box-sizing: border-box;
+          box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+          overflow-y: auto;
+          z-index: 1000;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-top: 40px;
+      }
+
+      .sidebar-logo {
+          width: 80px;
+          height: auto;
+          margin-bottom: 30px;
+      }
+
+      .sidebar h3 {
+          color: white;
+          margin-top: 0;
+          margin-bottom: 20px;
+          font-size: 1.2em;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+      }
+
+      .sidebar ul {
+          list-style: none;
+          padding: 0;
+          width: 100%;
+      }
+
+      .sidebar ul li {
+          margin-bottom: 10px;
+      }
+
+      .sidebar ul li a {
+          display: block;
+          color: var(--text-color);
+          text-decoration: none;
+          padding: 10px 15px;
+          border-radius: 6px;
+          transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow to transition */
+          font-weight: 500;
+          box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Initial state, no shadow */
+      }
+
+      .sidebar ul li a:hover {
+          background-color: rgba(255, 255, 255, 0.15); /* Slightly more opaque on hover */
+          color: white;
+          box-shadow: 0 0 15px rgba(116, 185, 255, 0.7); /* Blue glow effect */
+      }
+
+      .container {
+          width: 100%;
+          max-width: 960px;
+          padding: 20px;
+          box-sizing: border-box;
+          background-color: rgba(22, 33, 62, 0.9); /* Slightly transparent card background */
+          border-radius: 12px;
+          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          margin: 40px 20px 40px calc(var(--sidebar-width) + 40px); /* Adjust margin for sidebar */
+      }
+
+      header {
+          text-align: center;
+          padding-bottom: 30px;
+          border-bottom: 1px solid var(--border-color);
+          margin-bottom: 30px;
+      }
+
+      .main-logo { /* Renamed to avoid conflict with sidebar-logo */
+          width: 150px;
+          height: auto;
+          margin-bottom: 20px;
+      }
+
+      h1 {
+          font-family: 'Archivo Black', sans-serif; /* Using a similar bold font */
+          color: white; /* Changed to white */
+          font-size: 2.5em;
+          margin: 0;
+          text-transform: none; /* Changed to none */
+          letter-spacing: 2px;
+      }
+
+      h2 {
+          color: white; /* Changed to white */
+          margin-top: 40px;
+          margin-bottom: 20px;
+          font-family: 'Archivo Black', sans-serif;
+          font-size: 2em;
+          text-align: center;
+      }
+
+      .api-function {
+          background-color: var(--card-bg-color);
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 25px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          border: 1px solid var(--border-color);
+      }
+
+      .api-function pre {
+          background-color: var(--code-bg-color);
+          padding: 15px;
+          border-radius: 6px;
+          overflow-x: auto;
+          font-family: 'Roboto Mono', monospace; /* A good monospace font */
+          font-size: 0.95em;
+          line-height: 1.5;
+          white-space: pre-wrap; /* Ensures long lines wrap */
+          word-break: break-all; /* Breaks words if necessary */
+      }
+
+      .api-function code {
+          color: var(--text-color);
+      }
+
+      .api-function .return-type {
+          color: var(--return-type-color);
+          font-weight: bold;
+      }
+
+      .api-function .function-name {
+          color: var(--function-name-color);
+          font-weight: bold;
+      }
+
+      .api-function .param-type {
+          color: var(--param-type-color);
+          font-weight: bold;
+      }
+
+      .api-function .param-name {
+          color: var(--param-name-color);
+      }
+
+      .api-function .keyword {
+          color: var(--keyword-color);
+          font-weight: bold;
+      }
+
+      .api-function p {
+          margin-top: 15px;
+          font-size: 1em;
+          color: var(--text-color);
+      }
+
+      .api-function a {
+          color: var(--link-color);
+          text-decoration: none;
+          transition: color 0.3s ease;
+      }
+
+      .api-function a:hover {
+          text-decoration: underline;
+          color: #a0c4ff;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 992px) {
+          .sidebar {
+              width: 180px;
+              padding: 15px;
+          }
+          .container {
+              margin-left: calc(180px + 20px);
+          }
+          h1 {
+              font-size: 2.2em;
+          }
+          h2 {
+              font-size: 1.8em;
+          }
+      }
+
+      @media (max-width: 768px) {
+          .sidebar {
+              position: relative; /* Make sidebar part of flow on small screens */
+              width: 100%;
+              height: auto;
+              padding: 20px;
+              box-shadow: none;
+              border-bottom: 1px solid var(--border-color);
+              margin-bottom: 20px;
+              background-color: rgba(10, 20, 40, 0.95); /* Less transparent on mobile for better readability */
+              backdrop-filter: none; /* Remove blur on mobile */
+              -webkit-backdrop-filter: none;
+          }
+          .sidebar ul {
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: center;
+              gap: 10px;
+          }
+          .sidebar ul li {
+              margin-bottom: 0;
+          }
+          .sidebar-logo {
+              display: none; /* Hide sidebar logo on small screens */
+          }
+          .sidebar h3 {
+              display: none; /* Hide sidebar title on small screens */
+          }
+          .container {
+              margin: 20px 10px; /* Reset margin for small screens */
+              padding: 15px;
+          }
+          h1 {
+              font-size: 2em;
+          }
+          h2 {
+              font-size: 1.6em;
+          }
+          .api-function {
+              padding: 15px;
+          }
+          .api-function pre {
+              font-size: 0.85em;
+          }
+      }
+
+      @media (max-width: 480px) {
+          h1 {
+              font-size: 1.8em;
+          }
+          .main-logo {
+              width: 100px;
+          }
+      }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+      <img src="https://media.discordapp.net/attachments/816788410516766741/1398117823527653466/Synapse_Icon_1.webp?ex=68843230&is=6882e0b0&hm=b32831e91120bf3ed662917a398d74631a0570b020a79984f893e9424a878acf&=&format=webp&width=324&height=324" alt="SirHurt Logo" class="sidebar-logo">
+      <h3>Navigation</h3>
+      <ul>
+          <li><a href="#functions-section">Functions</a></li>
+          <li><a href="#debug-library-section">Debug Library</a></li>
+      </ul>
+  </nav>
+
+  <div class="container">
+      <header>
+          <img src="https://media.discordapp.net/attachments/816788410516766741/1398117823527653466/Synapse_Icon_1.webp?ex=68843230&is=6882e0b0&hm=b32831e91120bf3ed662917a398d74631a0570b020a79984f893e9424a878acf&=&format=webp&width=324&height=324" alt="SirHurt Logo" class="main-logo">
+          <h1>SirHurt V5 Documentation</h1>
+      </header>
+
+      <main>
+          <h2 id="functions-section">Functions</h2>
+          <div class="api-function">
+              <pre><code><span class="return-type">table</span> <span class="function-name">getrawmetatable</span>(<span class="param-type">Varient</span> <span class="param-name">instance</span>)</code></pre>
+              <p>Returns the raw metatable of <strong>instance</strong></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">bool</span> <span class="function-name">setreadonly</span>(<span class="param-type">table</span> <span class="param-name">instance</span>, <span class="param-type">bool</span> <span class="param-name">protected</span>)</code></pre>
+              <p>Sets instances read only lock to <strong>protected</strong></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">bool</span> <span class="function-name">isreadonly</span>(<span class="param-type">userdata</span> <span class="param-name">instance</span>)</code></pre>
+              <p>Returns if Instance is writeable or readonly.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">string</span> <span class="function-name">readfile</span>(<span class="param-type">string</span> <span class="param-name">filepath</span>)</code></pre>
+              <p>Reads file <strong>filepath</strong> and returns its body.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">bool</span> <span class="function-name">writefile</span>(<span class="param-type">string</span> <span class="param-name">filepath</span>, <span class="param-type">string</span> <span class="param-name">content</span>)</code></pre>
+              <p>Writes to file <strong>filepath</strong> and sets its body to <strong>content</strong>.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">string</span> <span class="function-name">setclipboard</span>(<span class="param-type">userdata</span> <span class="param-name">Property</span>)</code></pre>
+              <p>Sets your keyboards clipboard to value of <strong>Property</strong>.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">string</span> <span class="function-name">HttpGet</span>(<span class="param-type">string</span> <span class="param-name">url</span>)</code></pre>
+              <p>Returns page body of <strong>url</strong></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">string</span> <span class="function-name">HttpPost</span>(<span class="param-type">string</span> <span class="param-name">url</span>, <span class="param-type">string</span> <span class="param-name">data</span>, <span class="param-type">bool</span> <span class="param-name">async</span>, <span class="param-type">string</span> <span class="param-name">ContentType</span>)</code></pre>
+              <p>Sends a POST request to URL <strong>url</strong> with the post data of <strong>data</strong> with the content type of the data as <strong>ContentType</strong> and returns the body of the page.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">function</span> <span class="function-name">loadstring</span>(<span class="param-type">string</span> <span class="param-name">script</span>, [<span class="param-type">string</span> <span class="param-name">chunk</span>])</code></pre>
+              <p>Compiles the script into a function which can be called. Chunk is optional.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">queue_on_teleport</span>(<span class="param-type">string</span> <span class="param-name">script</span>)</code></pre>
+              <p>Pushes script into a queue which will be executed on teleportation.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">userdata</span> <span class="function-name">GetObjects</span>(<span class="param-type">string</span> <span class="param-name">assetid</span>)</code></pre>
+              <p>Loads a Roblox model <strong>assetid</strong> into the game and returns it</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">string</span> <span class="function-name">gethwid</span>()</code></pre>
+              <p>Returns your HWID for asshurt</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">string</span> <span class="function-name">sirhurt_create_secure_function</span>(<span class="param-type">string</span> <span class="param-name">script_to_protect</span>)</code></pre>
+              <p>A security function designed to make original script sources harder to obtain. Protects <strong>script_to_protect</strong> and returns a string that called with sirhurt_run_secure() to run your script.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">string</span> <span class="function-name">sirhurt_run_secure</span>(<span class="param-type">string</span> <span class="param-name">protected_script</span>)</code></pre>
+              <p>Runs the script <strong>protected_script</strong> that was obtained via sirhurt_create_secure_function.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">table</span> <span class="function-name">getnilinstances</span>()</code></pre>
+              <p>Returns a table with instances parented to nil</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">table</span> <span class="function-name">getgenv</span>()</code></pre>
+              <p>Returns a table populated with the SirHurt thread environment</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">table</span> <span class="function-name">getrenv</span>()</code></pre>
+              <p>Returns a table populated with the ROBLOX thread environment</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">table</span> <span class="function-name">getreg</span>()</code></pre>
+              <p>Returns a table populated with everything in the registry table</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">table</span> <span class="function-name">getgc</span>()</code></pre>
+              <p>Returns a table populated with everything in the garbage collector</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">bool</span> <span class="function-name">checkcaller</span>()</code></pre>
+              <p>Returns whether the function caller originated from a SirHurt script</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">table</span> <span class="function-name">getloadedmodules</span>()</code></pre>
+              <p>Returns a table with all modules currently loaded inside the game.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">table</span> <span class="function-name">getconnections</span>(<span class="param-type">RBXScriptSignal</span> <span class="param-name">signal</span>)</code></pre>
+              <p>Returns a table with all the connections of the signal <strong>signal</strong>.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">firesignal</span>(<span class="param-type">RBXScriptSignal</span> <span class="param-name">signal</span>, ...)</code></pre>
+              <p>Fires all signals connected to <strong>signal</strong> with the arguments ...</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">function</span> <span class="function-name">hookfunction</span>(<span class="param-type">function</span> <span class="param-name">old</span>, <span class="param-type">function</span> <span class="param-name">new</span>)</code></pre>
+              <p>Hooks function <strong>old</strong> with function <strong>new</strong> and returns a backup of function <strong>old</strong>.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">function</span> <span class="function-name">newcclosure</span>(<span class="param-type">function</span> <span class="param-name">func</span>)</code></pre>
+              <p>Wraps function <strong>func</strong> in a C closure and returns the closure</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">loadfile</span>(<span class="param-type">string</span> <span class="param-name">path</span>)</code></pre>
+              <p>Reads file (<strong>path</strong>) and executes the code contained in <strong>path</strong>.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">leftpress</span>()</code></pre>
+              <p>Simulates a left mouse button click.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">rightpress</span>()</code></pre>
+              <p>Simulates a right mouse button click.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">leftrelease</span>()</code></pre>
+              <p>Simulates a left mouse button release.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">rightrelease</span>()</code></pre>
+              <p>Simulates a right mouse button release.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">keypress</span>(<span class="param-type">int</span> <span class="param-name">k</span>)</code></pre>
+              <p>Simulates a key press to <strong>k</strong>, which is the <a href="https://docs.microsoft.com/en-us/windows/desktop/inputdev/virtual-key-codes">number mapping of a key</a></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">keyrelease</span>(<span class="param-type">int</span> <span class="param-name">k</span>)</code></pre>
+              <p>Simulates a key release to <strong>k</strong>, which is the <a href="https://docs.microsoft.com/en-us/windows/desktop/inputdev/virtual-key-codes">number mapping of a key</a></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">mousemoverel</span>(<span class="param-type">int</span> <span class="param-name">x</span>, <span class="param-type">int</span> <span class="param-name">y</span>)</code></pre>
+              <p>Moves the mouse cursor by <strong>x</strong> and <strong>y</strong> relative to the current cursor position.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">mousescroll</span>(<span class="param-type">int</span> <span class="param-name">n</span>)</code></pre>
+              <p>Scrolls the mouse by <strong>n</strong> amount</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">bool</span> <span class="function-name">isrbxactive</span>()</code></pre>
+              <p>Returns a bool based on if the foreground window is Roblox.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">bool</span> <span class="function-name">islclosure</span>(<span class="param-type">function</span> <span class="param-name">a</span>)</code></pre>
+              <p>Returns 'true' if <strong>a</strong> is a LClosure</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">None</span> <span class="function-name">fireclickdetector</span>(<span class="param-type">Variant</span> <span class="param-name">ClickDetector</span>, <span class="param-type">int</span> <span class="param-name">Distance</span>)</code></pre>
+              <p>Fires ClickDetector <strong>ClickDetector</strong> with distance <strong>Distance</strong></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">None</span> <span class="function-name">firetouchinterest</span>(<span class="param-type">Varient</span> <span class="param-name">Part</span>, <span class="param-type">Varient</span> <span class="param-name">PartToTouch</span>, <span class="param-type">int</span> <span class="param-name">touchtype</span>)</code></pre>
+              <p>Fires the TouchInterest of <strong>PartToTouch</strong> with the part touching as <strong>Part</strong></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">bool</span> <span class="function-name">is_sirhurt_closure</span>(<span class="param-type">function</span> <span class="param-name">func</span>)</code></pre>
+              <p>Returns true if <strong>func</strong> is a function made by SirHurt.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">bool</span> <span class="function-name">is_protected_closure</span>(<span class="param-type">function</span> <span class="param-name">func</span>)</code></pre>
+              <p>Returns true if <strong>func</strong> is a protected closure.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">userdata</span> <span class="function-name">get_hidden_gui</span>()</code></pre>
+              <p>Returns a private PlayerGui hidden from game scripts.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">table</span>(<span class="param-type">bool</span> <span class="param-name">Success</span>, <span class="param-type">int</span> <span class="param-name">StatusCode</span>, <span class="param-type">string</span> <span class="param-name">Body</span>) <span class="function-name">http_request</span>(<span class="param-type">table</span>(<span class="param-type">string</span> <span class="param-name">Url</span>, <span class="param-type">string</span> <span class="param-name">Method</span>, <span class="param-type">table</span> <span class="param-name">Headers</span>, <span class="param-type">string</span> <span class="param-name">Body</span>) <span class="param-name">func</span>)</code></pre>
+              <p>Similar in functionality to <a href="https://developer.roblox.com/en-us/api-reference/function/HttpService/RequestAsync">HttpService:RequestAsync</a>. Url parameter is the only required parameter. Documentation for HttpService:RequestAsync can be viewed <a href="https://developer.roblox.com/en-us/api-reference/function/HttpService/RequestAsync">here</a>. For authentication purposes our headers are defined under <b>SirHurt-User-Identifier</b> and <b>SirHurt-Fingerprint.</b></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">Variant</span> <span class="function-name">Drawing.new</span>(<span class="param-type">string</span> <span class="param-name">ClassName</span>)</code></pre>
+              <p>Creates a new DrawObject based on the given class name and returns it.</p>
+          </div>
+
+          <h2 id="debug-library-section">Debug Library</h2>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">Variant</span> <span class="function-name">getupvalue/debug.getupvalue</span>(<span class="param-type">Variant</span>&lt;<span class="param-type">function, int</span>&gt; <span class="param-name">a</span>, <span class="param-type">int</span> <span class="param-name">b</span>)</code></pre>
+              <p>Returns the value of the requested upvalue from the stack specified</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">string</span> <span class="function-name">setupvalue/debug.setupvalue</span>(<span class="param-type">Variant</span>&lt;<span class="param-type">function, int</span>&gt; <span class="param-name">a</span>, <span class="param-type">int</span> <span class="param-name">b</span>, <span class="param-type">Variant</span> <span class="param-name">c</span>)</code></pre>
+              <p>Sets the value of the requested upvalue from the stack specified and returns the upvalues name.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">Variant</span> <span class="function-name">getproto/debug.getproto</span>(<span class="param-type">function</span> <span class="param-name">a</span>, <span class="param-type">int</span> <span class="param-name">b</span>)</code></pre>
+              <p>Gets local function at <strong>b</strong></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">Table</span>&lt;<span class="param-type">Variant</span>&gt; <span class="function-name">getupvalues/debug.getupvalues</span>(<span class="param-type">Variant</span>&lt;<span class="param-type">function, int</span>&gt; <span class="param-name">a</span>)</code></pre>
+              <p>Returns all upvalues from the stack specified.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">Variant</span> <span class="function-name">getconstant/debug.getconstant</span>(<span class="param-type">Variant</span>&lt;<span class="param-type">function, int</span>&gt; <span class="param-name">f</span>, <span class="param-type">int</span> <span class="param-name">index</span>)</code></pre>
+              <p>Returns constant in function <strong>f</strong> at index <strong>index</strong></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">Table</span>&lt;<span class="param-type">Variant</span>&gt; <span class="function-name">getconstants/debug.getconstants</span>(<span class="param-type">Variant</span>&lt;<span class="param-type">function, int</span>&gt; <span class="param-name">f</span>)</code></pre>
+              <p>Stores all constants in function <strong>f</strong> in a table and returns it.</p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">none</span> <span class="function-name">setconstant/debug.setconstant</span>(<span class="param-type">Variant</span>&lt;<span class="param-type">function, int</span>&gt; <span class="param-name">f</span>, <span class="param-type">int</span> <span class="param-name">index</span>, <span class="param-type">Variant</span> <span class="param-name">value</span>)</code></pre>
+              <p>Sets constant in function <strong>f</strong> at index <strong>index</strong> to <strong>value</strong></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">Table</span>&lt;<span class="param-type">Variant</span>&gt; <span class="function-name">debug.setmetatable</span>(<span class="param-type">Variant</span> <span class="param-name">a</span>, <span class="param-type">Table</span>&lt;<span class="param-type">Variant</span>&gt; <span class="param-name">b</span>)</code></pre>
+              <p>Sets the metatable of <strong>a</strong> to <strong>b</strong></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">Table</span>&lt;<span class="param-type">Variant</span>&gt; <span class="function-name">debug.getinfo</span>(<span class="param-type">Variant</span>&lt;<span class="param-type">function, int</span>&gt; <span class="param-name">a</span>, <span class="param-type">string</span> <span class="param-name">b</span>)</code></pre>
+              <p>Returns a table of info from to the Lua function <strong>a</strong></p>
+          </div>
+
+          <div class="api-function">
+              <pre><code><span class="return-type">Table</span>&lt;<span class="param-type">Variant</span>&gt; <span class="function-name">debug.getregistry</span>()</code></pre>
+              <p>Returns the lua registry.</p>
+          </div>
+      </main>
+  </div>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const sidebarLinks = document.querySelectorAll('.sidebar ul li a');
+
+          sidebarLinks.forEach(link => {
+              link.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  const targetId = this.getAttribute('href').substring(1);
+                  const targetElement = document.getElementById(targetId);
+
+                  if (targetElement) {
+                      targetElement.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'start'
+                      });
+                  }
+              });
+          });
+      });
+  </script>
+</body>
+</html>
